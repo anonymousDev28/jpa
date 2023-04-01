@@ -26,32 +26,33 @@ Khi sử dụng @Id để đánh dấu một cột là Identity thì không cầ
 
 Câu 8: 
 Các method trong interface EmployeeRepository:
-
+```java
     public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByEmailAddressAndLastName(String emailAddress, String lastName);
     List<Employee> findByFirstNameOrLastName(String firstName, String lastName);
     List<Employee> findByLastNameOrderByFirstNameAsc(String lastName);
     List<Employee> findByFirstNameIgnoreCase(String firstName);
     }
-
+```
+    
 
 Câu 9: 
 @NamedQuery là một annotation để định nghĩa một câu lệnh truy vấn có tên được đặt trước trong annotation, dùng để tối ưu hóa hiệu suất khi thực thi truy vấn.
 
 Ví dụ:
-
+```java
     @Entity
     @NamedQuery(name = "findEmployeesByLastName", query = "SELECT e FROM Employee e WHERE e.lastName = :lastName")
     public class Employee {
-    ...
+    
     }
-
+```
 
 @Query là một annotation để định nghĩa một câu lệnh truy vấn inline bằng cách sử dụng JPQL hoặc native SQL.
 
 Ví dụ:
 
-
+```java
     @Repository
     public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     
@@ -62,29 +63,35 @@ Ví dụ:
     Employee findByEmailAddress(String emailAddress);
 
     }
+```
+   
 
 
 Câu 10:
 
 ví dụ sử dụng sorting và paging khi query đối tượng Employee:
-
+```java
     @Repository
     public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     List<Employee> findByLastNameOrderByFirstNameAsc(String lastName, Pageable pageable);
     }
 
+```
+    
 
 Trong đó, Pageable được sử dụng để định nghĩa các thông số phân trang như số trang, số phần tử trên mỗi trang, vị trí bắt đầu, thứ tự sắp xếp và trường sắp xếp.
 
 
-    Pageable pageable = PageRequest.of(0, 10, Sort.by("firstName").ascending());
-    List<Employee> employees = employeeRepository.findByLastNameOrderByFirstNameAsc("Smith", pageable);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("firstName").ascending());
+        List<Employee> employees = employeeRepository.findByLastNameOrderByFirstNameAsc("Smith", pageable);
+
+   
 
 
 Câu 11:
 class category:
-
+```java
     @Getter
     @Setter
     @NoArgsConstructor
@@ -106,10 +113,12 @@ class category:
         }
     }
     }
+```
+    
 
 class Product:
 
-
+```java
     @Table(name = "product")
     @Entity
     @Getter
@@ -133,10 +142,12 @@ class Product:
     )
     private List<Tag> tags = new ArrayList<>();
 
-    }`
+    }
+```
+    
 
 class tag:
-
+```java
     @Getter
     @Setter
     @NoArgsConstructor
@@ -151,6 +162,8 @@ class tag:
     @ManyToMany(mappedBy = "tags")
     private List<Product> products = new ArrayList<>();
     }
+```
+   
 Câu 12:
 
     @Query("SELECT new com.techmaster.jpatest.dto.UserDTO(u.id, u.name, u.email) FROM User u")
@@ -162,7 +175,7 @@ Câu 12:
     List<UserProjection> findAllUserProjection();
 
 Câu 13:
-
+```java
     @Getter
     @Setter
     @NoArgsConstructor
@@ -177,8 +190,10 @@ Câu 13:
     //    @Column(name = "id", columnDefinition = "VARCHAR(255)")
     private String id;
     private String title;
+
     @PrePersist
     public void generateId() {
         this.id = UUID.randomUUID().toString();
     }
-}
+    }
+```
